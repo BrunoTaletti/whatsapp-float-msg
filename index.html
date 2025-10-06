@@ -1,138 +1,130 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  
-    <style>
-      .wp-float-button {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, #25D366, #128C7E);
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-        transition: all 0.3s ease;
-        animation: pulse 2s infinite;
-        text-decoration: none;
-        z-index: 99999;
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    .wp-float-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+      text-decoration: none;
+      z-index: 99999;
+    }
+
+    .wp-float-button:hover {
+      transform: scale(1.1);
+      color: white;
+      opacity: 0.8;
+      text-decoration: none;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
       }
-    
-      .wp-float-button:hover {
-        transform: scale(1.1);
-        color: white;
-        opacity: 0.8;
-        text-decoration: none;
+      70% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
       }
-    
-      @keyframes pulse {
-        0% {
-          transform: scale(1);
-          box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
-        }
-        70% {
-          transform: scale(1.05);
-          box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
-        }
-        100% {
-          transform: scale(1);
-          box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
-        }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
       }
-    
-      .wp-tooltip {
-        position: absolute;
-        bottom: 70px;
-        right: 0;
-        background: #ffffff;
-        color: #333;
-        padding: 10px 14px;
-        border-radius: 8px;
-        font-size: 14px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        white-space: nowrap;
-        opacity: 0;
-        transform: translateY(10px) scale(0.95);
-        pointer-events: none;
-        transition: all 0.4s ease;
-        z-index: 100000;
+    }
+
+    .wp-tooltip {
+      position: absolute;
+      bottom: 70px;
+      right: 0;
+      background: #ffffff;
+      color: #333;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(10px) scale(0.95);
+      pointer-events: none;
+      transition: all 0.4s ease;
+      z-index: 100000;
+    }
+
+    .wp-tooltip.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .wp-tooltip::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      right: 18px;
+      border-width: 8px 8px 0 8px;
+      border-style: solid;
+      border-color: #ffffff transparent transparent transparent;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    function showTooltipRepeatedly(tooltip) {
+      function show() {
+        tooltip.classList.add("show");
+        setTimeout(() => {
+          tooltip.classList.remove("show");
+        }, 16000); // Tooltip visível por 16s
       }
-    
-      .wp-tooltip.show {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    
-      .wp-tooltip::after {
-        content: "";
-        position: absolute;
-        bottom: -8px;
-        right: 18px;
-        border-width: 8px 8px 0 8px;
-        border-style: solid;
-        border-color: #ffffff transparent transparent transparent;
-      }
-    </style>
-  </head>
-  <body>
-    <script>
-      function showTooltipRepeatedly(tooltip) {
-        function show() {
-          tooltip.classList.add("show");
-          setTimeout(() => {
-            tooltip.classList.remove("show");
-          }, 16000); // Duração visível do balão (16 segundos)
-        }
-    
-        // Primeira exibição após 1 segundo
-        setTimeout(show, 1000);
-    
-        // Repetir a cada 2 minutos (120000ms)
-        setInterval(show, 120000);
-      }
-    
-      function createWhatsAppButton() {
-        if (document.querySelector('.wp-float-button')) return;
-    
-        // Criação do botão WhatsApp
-        const link = document.createElement("a");
-        link.href = "https://wa.me/5500000000?text=Olá%2C+tenho+uma+dúvida";
-        link.target = "_blank";
-        link.className = "wp-float-button";
-        link.setAttribute("aria-label", "WhatsApp");
-    
-        const icon = document.createElement("i");
-        icon.className = "fab fa-whatsapp";
-    
-        link.appendChild(icon);
-        document.body.appendChild(link);
-    
-        // Criação do balão
-        const tooltip = document.createElement("div");
-        tooltip.className = "wp-tooltip";
-        tooltip.innerText = "Veja nossas promoções de hoje!";
-        link.appendChild(tooltip);
-    
-        // Mostrar o balão repetidamente
-        showTooltipRepeatedly(tooltip);
-      }
-    
-      // Cria o botão assim que possível
+
+      setTimeout(show, 1000); // Primeira exibição após 1s
+      setInterval(show, 120000); // Repetição a cada 2min
+    }
+
+    function createWhatsAppButton() {
+      if (document.querySelector('.wp-float-button')) return;
+
+      const link = document.createElement("a");
+      link.href = "https://wa.me/5511999999999?text=Olá%2C+tenho+uma+dúvida"; // Substituir com seu número real
+      link.target = "_blank";
+      link.className = "wp-float-button";
+      link.setAttribute("aria-label", "WhatsApp");
+
+      const icon = document.createElement("i");
+      icon.className = "fab fa-whatsapp";
+      link.appendChild(icon);
+      document.body.appendChild(link);
+
+      const tooltip = document.createElement("div");
+      tooltip.className = "wp-tooltip";
+      tooltip.innerText = "Veja nossas promoções de hoje!";
+      link.appendChild(tooltip);
+
+      showTooltipRepeatedly(tooltip);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
       createWhatsAppButton();
-    
-      // Verifica se o botão continua presente (em páginas AJAX)
+
       setInterval(() => {
         if (!document.querySelector('.wp-float-button')) {
           createWhatsAppButton();
         }
       }, 1000);
-    </script>
-    <div class="wp-float-button"></div>
-  </body>
+    });
+  </script>
+</body>
 </html>
